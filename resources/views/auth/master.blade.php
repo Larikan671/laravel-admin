@@ -36,7 +36,7 @@
             padding:0 5px;
         }
     </style>
-    
+
     @yield('pre_css')
     <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,700" rel="stylesheet">
 </head>
@@ -44,30 +44,11 @@
 <div class="container-fluid">
     <div class="row">
         <div class="faded-bg animated"></div>
-        <div class="hidden-xs col-sm-7 col-md-8">
-            <div class="clearfix">
-                <div class="col-sm-12 col-md-10 col-md-offset-2">
-                    <div class="logo-title-container">
-                        <?php $admin_logo_img = Voyager::setting('admin.icon_image', ''); ?>
-                        @if($admin_logo_img == '')
-                            <img class="img-responsive pull-left flip logo hidden-xs animated fadeIn" src="{{ voyager_asset('images/logo-icon-light.png') }}" alt="Logo Icon">
-                        @else
-                            <img class="img-responsive pull-left flip logo hidden-xs animated fadeIn" src="{{ Voyager::image($admin_logo_img) }}" alt="Logo Icon">
-                        @endif
-                        <div class="copy animated fadeIn">
-                            <h1>{{ Voyager::setting('admin.title', 'Voyager') }}</h1>
-                            <p>{{ Voyager::setting('admin.description', __('voyager::login.welcome')) }}</p>
-                        </div>
-                    </div> <!-- .logo-title-container -->
-                </div>
-            </div>
-        </div>
-
+        <div class="hidden-xs col-sm-3 col-md-4"></div>
         <div class="col-xs-12 col-sm-5 col-md-4 login-sidebar">
-
-           @yield('content')
-
-        </div> <!-- .login-sidebar -->
+            <!-- .login-sidebar -->
+            @yield('content')
+        </div>
     </div> <!-- .row -->
 </div> <!-- .container-fluid -->
 @yield('post_js')
