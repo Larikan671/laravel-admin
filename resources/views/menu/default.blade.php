@@ -9,7 +9,7 @@
 @endphp
 
 @foreach ($items as $item)
-        <?php $item->title = '444'; ?>
+        <?php //$item->title = '444'; ?>
     @if($item->status == \TCG\Voyager\Models\MenuItem::STATUS_HIDDEN)
     @stop
     @endif
