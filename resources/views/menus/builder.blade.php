@@ -93,9 +93,11 @@
                             <label for="parameters">{{ __('voyager::menu_builder.route_parameter') }}</label>
                             <textarea rows="3" class="form-control" id="m_parameters" name="parameters" placeholder="{{ json_encode(['key' => 'value'], JSON_PRETTY_PRINT) }}"></textarea><br>
                         </div>
-                        <label for="icon_class">{{ __('voyager::menu_builder.icon_class') }} <a
-                                    href="{{ route('voyager.compass.index') }}#fonts"
-                                    target="_blank">{!! __('voyager::menu_builder.icon_class2') !!}</label>
+                        <label for="icon_class">
+                            {{ __('voyager::menu_builder.icon_class') }}
+                            <a href="{{ route('voyager.compass.index') }}#fonts"
+                                    target="_blank"> {{ __('voyager::menu_builder.icon_class2') }}</a>
+                        </label>
                         <input type="text" class="form-control" id="m_icon_class" name="icon_class"
                                placeholder="{{ __('voyager::menu_builder.icon_class_ph') }}"><br>
                         <label for="color">{{ __('voyager::menu_builder.color') }}</label>
@@ -106,7 +108,16 @@
                             <option value="_self" selected="selected">{{ __('voyager::menu_builder.open_same') }}</option>
                             <option value="_blank">{{ __('voyager::menu_builder.open_new') }}</option>
                         </select>
+
+                        <label for="status">{{ __('voyager::menu_builder.status') }}</label>
+                        <select id="m_status" class="form-control" name="status">
+                            <option value="{{ \TCG\Voyager\Models\MenuItem::STATUS_ACTIVE }}" selected="selected" >{{ __('voyager::menu_builder.status_active') }}</option>
+                            <option value="{{ \TCG\Voyager\Models\MenuItem::STATUS_HIDDEN }}" >{{ __('voyager::menu_builder.status_hidden') }}</option>
+                            <option value="{{ \TCG\Voyager\Models\MenuItem::STATUS_INACTIVE }}" >{{ __('voyager::menu_builder.status_inactive') }}</option>
+                        </select>
+
                         <input type="hidden" name="menu_id" value="{{ $menu->id }}">
+
                         <input type="hidden" name="id" id="m_id" value="">
                     </div>
                     <div class="modal-footer">
@@ -172,6 +183,7 @@
                 $m_icon_class  = $('#m_icon_class'),
                 $m_color       = $('#m_color'),
                 $m_target      = $('#m_target'),
+                $m_status      = $('#m_status'),
                 $m_id          = $('#m_id');
 
             /**
@@ -205,6 +217,7 @@
                     $m_hd_add.show();
                     $m_hd_edit.hide();
                     $m_target.val('_self').change();
+                    $m_status.val('{{ \TCG\Voyager\Models\MenuItem::STATUS_DEFAULT }}').change();
                     $m_link_type.val('url').change();
                     $m_url.val('');
                     $m_icon_class.val('');
@@ -217,7 +230,6 @@
 
                     var _src = e.relatedTarget.data, // the source
                         id   = _src.data('id');
-
                     $m_title.val(_src.data('title'));
                     $m_url.val(_src.data('url'));
                     $m_route.val(_src.data('route'));
@@ -237,6 +249,15 @@
                         $m_target.find("option[value='_blank']").attr('selected', 'selected');
                         $m_target.val('_blank');
                     }
+
+                    // Изменение значения поля Статус
+                    var nameField = 'status';
+                    var valField = _src.data(nameField);
+                    //console.dir(_src.data());
+                    $m_status.find("option[value!='"+valField+"']").removeAttr('selected');
+                    $m_status.find("option[value='"+valField+"']").attr('selected', 'selected');
+                    $m_status.val(valField);
+
                     if (_src.data('route') != "") {
                         $m_link_type.val('route').change();
                         $m_url_type.hide();

@@ -52,13 +52,29 @@ class Menu extends Model
      */
     public static function display($menuName, $type = null, array $options = [])
     {
+        $a=1;
         // GET THE MENU - sort collection in blade
+
         $menu = \Cache::remember('voyager_menu_'.$menuName, \Carbon\Carbon::now()->addDays(30), function () use ($menuName) {
+            $a=1;
             return static::where('name', '=', $menuName)
-            ->with(['parent_items.children' => function ($q) {
-                $q->orderBy('order');
-            }])
-            ->first();
+                ->with([
+                    'parent_items' => function ($q) {
+                        $a=1;
+    //                    if ($menuName == 'admin' && $type == '_json') {
+                        //$q->where('status', MenuItem::STATUS_ACTIVE);
+    //                    }
+                        $q->orderBy('order');
+                    },
+                    'parent_items.children' => function ($q) {
+                        $a=1;
+                        //if ($menuName == 'admin' && $type == '_json') {
+                            $q->where('status', MenuItem::STATUS_ACTIVE);
+                        //}
+                        $q->orderBy('order');
+                    }
+                ])
+                ->first();
         });
 
         // Check for Menu Existence
@@ -71,10 +87,18 @@ class Menu extends Model
         // Convert options array into object
         $options = (object) $options;
 
-        $items = $menu->parent_items->sortBy('order');
+        //$parent_items = $menu->parent_items;
+        //$parent_items = $menu->parent_items->where('status', '=', MenuItem::STATUS_ACTIVE);
+        //$items = $parent_items->sortBy('order');
 
         if ($menuName == 'admin' && $type == '_json') {
+            //$parent_items = $menu->parent_items->where('status', '=', MenuItem::STATUS_ACTIVE);
+            $parent_items = $menu->parent_items->where('status', '=', MenuItem::STATUS_ACTIVE);
+            //$parent_items = $menu->parent_items;
+            $items = $parent_items->sortBy('order');
             $items = static::processItems($items);
+        } else {
+            $items = $menu->parent_items->sortBy('order');
         }
 
         if ($type == 'admin') {
@@ -94,10 +118,8 @@ class Menu extends Model
         if ($type === '_json') {
             return $items;
         }
-
-        return new \Illuminate\Support\HtmlString(
-            \Illuminate\Support\Facades\View::make($type, ['items' => $items, 'options' => $options])->render()
-        );
+        $html = \Illuminate\Support\Facades\View::make($type, ['items' => $items, 'options' => $options])->render();
+        return new \Illuminate\Support\HtmlString($html);
     }
 
     public function removeMenuFromCache()

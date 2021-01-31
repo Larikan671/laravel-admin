@@ -1,5 +1,5 @@
 @if(!isset($innerLoop))
-<ul class="nav navbar-nav">
+<ul class="nav 222 navbar-nav">
 @else
 <ul class="dropdown-menu">
 @endif
@@ -13,44 +13,43 @@
 @endphp
 
 @foreach ($items as $item)
-
     @php
+        $item->title = '333';
+                $originalItem = $item;
+                if (Voyager::translatable($item)) {
+                    $item = $item->translate($options->locale);
+                }
 
-        $originalItem = $item;
-        if (Voyager::translatable($item)) {
-            $item = $item->translate($options->locale);
-        }
+                $listItemClass = null;
+                $linkAttributes =  null;
+                $styles = null;
+                $icon = null;
+                $caret = null;
 
-        $listItemClass = null;
-        $linkAttributes =  null;
-        $styles = null;
-        $icon = null;
-        $caret = null;
+                // Background Color or Color
+                if (isset($options->color) && $options->color == true) {
+                    $styles = 'color:'.$item->color;
+                }
+                if (isset($options->background) && $options->background == true) {
+                    $styles = 'background-color:'.$item->color;
+                }
 
-        // Background Color or Color
-        if (isset($options->color) && $options->color == true) {
-            $styles = 'color:'.$item->color;
-        }
-        if (isset($options->background) && $options->background == true) {
-            $styles = 'background-color:'.$item->color;
-        }
+                // With Children Attributes
+                if(!$originalItem->children->isEmpty()) {
+                    $linkAttributes =  'class="dropdown-toggle" data-toggle="dropdown"';
+                    $caret = '<span class="caret"></span>';
 
-        // With Children Attributes
-        if(!$originalItem->children->isEmpty()) {
-            $linkAttributes =  'class="dropdown-toggle" data-toggle="dropdown"';
-            $caret = '<span class="caret"></span>';
+                    if(url($item->link()) == url()->current()){
+                        $listItemClass = 'dropdown active';
+                    }else{
+                        $listItemClass = 'dropdown';
+                    }
+                }
 
-            if(url($item->link()) == url()->current()){
-                $listItemClass = 'dropdown active';
-            }else{
-                $listItemClass = 'dropdown';
-            }
-        }
-
-        // Set Icon
-        if(isset($options->icon) && $options->icon == true){
-            $icon = '<i class="' . $item->icon_class . '"></i>';
-        }
+                // Set Icon
+                if(isset($options->icon) && $options->icon == true){
+                    $icon = '<i class="' . $item->icon_class . '"></i>';
+                }
 
     @endphp
 

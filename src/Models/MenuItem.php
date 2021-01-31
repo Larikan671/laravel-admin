@@ -11,6 +11,23 @@ class MenuItem extends Model
 {
     use Translatable;
 
+    /**
+     * Statuses.
+     */
+    public const STATUS_ACTIVE = 'ACTIVE'; //активный
+    public const STATUS_HIDDEN = 'HIDDEN'; //скрытый
+    public const STATUS_INACTIVE = 'INACTIVE'; //отключен
+
+    public const STATUS_DEFAULT = 'ACTIVE'; //значение стаитуса по умолчанию
+
+
+    /**
+     * List of statuses.
+     *
+     * @var array
+     */
+    public static $statuses = [self::STATUS_ACTIVE, self::STATUS_HIDDEN, self::STATUS_INACTIVE];
+
     protected $translatorMethods = [
         'link' => 'translatorLink',
     ];
@@ -40,8 +57,10 @@ class MenuItem extends Model
 
     public function children()
     {
-        return $this->hasMany(Voyager::modelClass('MenuItem'), 'parent_id')
-            ->with('children');
+        return $this->hasMany(Voyager::modelClass('MenuItem','parent_id','id'), 'parent_id')
+            ->with('children')
+            //->whereRaw('status = '.MenuItem::STATUS_ACTIVE);
+        ;
     }
 
     public function menu()

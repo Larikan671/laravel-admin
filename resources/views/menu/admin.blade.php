@@ -1,7 +1,8 @@
+{{--Шаблон вывода пунктов меню в конструкторе меню--}}
 <ol class="dd-list">
 
 @foreach ($items as $item)
-
+        <?php //$item->title = '555'; ?>
     <li class="dd-item" data-id="{{ $item->id }}">
         <div class="pull-right item_actions">
             <div class="btn btn-sm btn-danger pull-right delete" data-id="{{ $item->id }}">
@@ -12,6 +13,7 @@
                 data-title="{{ $item->title }}"
                 data-url="{{ $item->url }}"
                 data-target="{{ $item->target }}"
+                data-status="{{ $item->status }}"
                 data-icon_class="{{ $item->icon_class }}"
                 data-color="{{ $item->color }}"
                 data-route="{{ $item->route }}"
