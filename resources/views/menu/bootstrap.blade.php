@@ -14,7 +14,7 @@
 
 @foreach ($items as $item)
     @php
-        $item->title = '333';
+        //$item->title = '333';
                 $originalItem = $item;
                 if (Voyager::translatable($item)) {
                     $item = $item->translate($options->locale);

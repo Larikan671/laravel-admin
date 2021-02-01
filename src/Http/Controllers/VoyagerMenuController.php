@@ -5,6 +5,8 @@ namespace TCG\Voyager\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Arr;
 use TCG\Voyager\Facades\Voyager;
+use TCG\Voyager\Models\MenuItem;
+use TCG\Voyager\Models\Page;
 
 class VoyagerMenuController extends Controller
 {
@@ -16,7 +18,15 @@ class VoyagerMenuController extends Controller
 
         $isModelTranslatable = is_bread_translatable(Voyager::model('MenuItem'));
 
-        return Voyager::view('voyager::menus.builder', compact('menu', 'isModelTranslatable'));
+        $itemsPage = Page::where('status', '<>', MenuItem::STATUS_INACTIVE)->orderBy('id')->pluck('title', 'id');
+
+        return Voyager::view('voyager::menus.builder',
+            [
+                'menu' => $menu,
+                'isModelTranslatable' => $isModelTranslatable,
+                'itemsPage' => $itemsPage,
+            ]
+        );
     }
 
     public function delete_menu($menu, $id)
@@ -32,7 +42,7 @@ class VoyagerMenuController extends Controller
         return redirect()
             ->route('voyager.menus.builder', [$menu])
             ->with([
-                'message'    => __('voyager::menu_builder.successfully_deleted'),
+                'message' => __('voyager::menu_builder.successfully_deleted'),
                 'alert-type' => 'success',
             ]);
     }
@@ -67,7 +77,7 @@ class VoyagerMenuController extends Controller
         return redirect()
             ->route('voyager.menus.builder', [$data['menu_id']])
             ->with([
-                'message'    => __('voyager::menu_builder.successfully_created'),
+                'message' => __('voyager::menu_builder.successfully_created'),
                 'alert-type' => 'success',
             ]);
     }
@@ -95,7 +105,7 @@ class VoyagerMenuController extends Controller
         return redirect()
             ->route('voyager.menus.builder', [$menuItem->menu_id])
             ->with([
-                'message'    => __('voyager::menu_builder.successfully_updated'),
+                'message' => __('voyager::menu_builder.successfully_updated'),
                 'alert-type' => 'success',
             ]);
     }

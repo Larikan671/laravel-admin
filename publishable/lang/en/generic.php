@@ -105,6 +105,7 @@ return [
     'updated_order'          => 'Order updated',
     'upload'                 => 'Upload',
     'url'                    => 'URL',
+    'url_slug'               => 'URL Slug (must be unique in group)',
     'view'                   => 'View',
     'viewing'                => 'Viewing',
     'whoopsie'               => 'Whoopsie!',

@@ -58,7 +58,7 @@ return [
         'bread'        => 'BREAD',
         'categories'   => 'Категории',
         'compass'      => 'Compass',
-        'dashboard'    => 'Панель управления',
+        'dashboard'    => 'Админпанель',
         'database'     => 'База данных',
         'media'        => 'Медиа',
         'menu_builder' => 'Конструктор Меню',

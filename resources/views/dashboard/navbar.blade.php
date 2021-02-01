@@ -18,13 +18,14 @@
                     </li>
                     @foreach ($segments as $segment)
                         @php
-                        $url .= '/'.$segment;
+                            $nameSegment = isset($dataType) ? ucfirst(urldecode($dataType->getAttribute('display_name_plural'))) : $segment;
+                            $url .= '/'.$segment;
                         @endphp
                         @if ($loop->last)
-                            <li>{{ ucfirst(urldecode($segment)) }}</li>
+                            <li>{{ $nameSegment }}</li>
                         @else
                             <li>
-                                <a href="{{ $url }}">{{ ucfirst(urldecode($segment)) }}</a>
+                                <a href="{{ $url }}">{{ $nameSegment }}</a>
                             </li>
                         @endif
                     @endforeach
