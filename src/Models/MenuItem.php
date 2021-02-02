@@ -57,10 +57,9 @@ class MenuItem extends Model
 
     public function children()
     {
-        return $this->hasMany(Voyager::modelClass('MenuItem','parent_id','id'), 'parent_id')
-            ->with('children')
-            //->whereRaw('status = '.MenuItem::STATUS_ACTIVE);
-        ;
+        return $this->hasMany(Voyager::modelClass('MenuItem', 'parent_id', 'id'), 'parent_id')
+            ->with('children')//->whereRaw('status = '.MenuItem::STATUS_ACTIVE);
+            ;
     }
 
     public function menu()
@@ -150,5 +149,13 @@ class MenuItem extends Model
         }
 
         return $order;
+    }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasOne
+     */
+    public function page()
+    {
+        return $this->hasOne(Voyager::modelClass('Page'),'id','page_id');
     }
 }

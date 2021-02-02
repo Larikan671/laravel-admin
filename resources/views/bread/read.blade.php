@@ -1,3 +1,4 @@
+{!! "<!-- Template: ". __FILE__."-->" !!}
 @extends('voyager::master')
 
 @section('page_title', __('voyager::generic.view').' '.$dataType->getTranslatedAttribute('display_name_singular'))

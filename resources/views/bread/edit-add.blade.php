@@ -1,4 +1,5 @@
 {{--Шаблон типовой страницы редактирования записи--}}
+{!! "<!-- Template: ". __FILE__."-->" !!}
 @php
     $edit = !is_null($dataTypeContent->getKey());
     $add  = is_null($dataTypeContent->getKey());
